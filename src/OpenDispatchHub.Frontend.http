@@ -1,0 +1,6 @@
+@OpenDispatchHub.Frontend_HostAddress = http://localhost:5134
+
+###GET {{OpenDispatchHub.Frontend_HostAddress}}
+###Accept: application/json
+
+###
