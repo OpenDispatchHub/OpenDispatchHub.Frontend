@@ -18,7 +18,11 @@ internal class Program
         });
         // Add services to the container.
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .ConfigureApiBehaviorOptions(options =>
+            {
+                options.SuppressMapClientErrors = true;
+            });
         builder.Services.AddDbContext<DataContext>(options =>
         {
             options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -42,27 +46,6 @@ internal class Program
 
         app.MapControllers();
 
-        using var scope = app.Services.CreateScope();
-        IRouteManager manager = scope.ServiceProvider.GetRequiredService<IRouteManager>();
-        IRoute rt = await manager.Create();
-        rt.Name = "2121";
-        rt.StartTime = new DateTime(2024, 8, 5, 22, 30, 0, DateTimeKind.Local);
-        IRouteStop sp = await manager.CreateStop(rt);
-        sp.Address = "4002 Galvin Rd Centralia, WA 98531 US";
-        sp.Notes = "UNFI Distribution Center";
-        sp = await manager.CreateStop(rt);
-        sp.Address = "7200 WILLIAMS HIGHWAY, GRANT PASS OR 97527 US";
-        sp.Notes = "Hidden Valley Market";
-        sp = await manager.CreateStop(rt);
-        sp.Address = "4685 HIGHWAY 234, WHITE CITY OR 97503 US";
-        sp.Notes = "Rainey's Corner";
-        sp = await manager.CreateStop(rt);
-        sp.Address = "143 DAVIS ROAD, HAPPY CAMP CA 96039 US";
-        sp.Notes = "Kingfisher Market";
-        sp = await manager.CreateStop(rt);
-        sp.Address = "4002 Galvin Rd Centralia, WA 98531 US";
-        sp.Notes = "UNFI Distribution Center";
-        await manager.Update(rt);
         app.Run();
     }
 }

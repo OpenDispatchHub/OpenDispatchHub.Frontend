@@ -150,8 +150,13 @@ public class RouteManager : IRouteManager
         }
     }
 
-    public IAsyncEnumerable<IRoute> Search(object query)
+    public IAsyncEnumerable<IRoute> Search(object? query)
     {
+        if (query == null || (query is string str && str.Equals("*", StringComparison.Ordinal)))
+        {
+            return Context.Routes.AsAsyncEnumerable();
+        }
+
         throw new NotImplementedException();
     }
 
